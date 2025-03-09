@@ -10,8 +10,8 @@ Glow is an innovative skincare analysis platform that leverages artificial intel
 - **Skin Analysis**: Get personalized skin condition analysis and recommendations
 - **Product Carousel**: Browse through recommended products tailored to your skin type
 - **Interactive Features**:
-  - Skincare Scanner Slider
-  - Skin Analysis Slider
+  - Skincare Scanner
+  - Skin Analysis
   - Skin Conditions Explorer
   - Progress Tracking Graph
   - FAQ Section
