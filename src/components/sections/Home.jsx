@@ -21,11 +21,11 @@ export function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="py-6 flex justify-between items-center">
           {/* Left buttons */}
-          <div className="flex gap-2">
-            <button className="px-8 py-3 rounded-full bg-lime-200 text-base">
+          <div className="flex gap-2 p-1 bg-white rounded-full border">
+            <button className="px-8 py-3 rounded-full bg-lime-200 text-base transition-colors">
               Commercial
             </button>
-            <button className="px-8 py-3 rounded-full text-base">
+            <button className="px-8 py-3 rounded-full text-base hover:bg-gray-50 transition-colors">
               Business
             </button>
           </div>
