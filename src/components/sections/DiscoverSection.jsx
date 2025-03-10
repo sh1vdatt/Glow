@@ -11,7 +11,6 @@ export function DiscoverSection() {
           </h2>
           <div className="flex items-center mt-6 md:mt-0 md:ml-8">
             <div className="relative flex items-center">
-              {/* Profile image circle */}
               <div className="h-20 w-20 md:h-24 md:w-24 bg-white rounded-full flex items-center justify-center overflow-hidden z-10">
                 <img
                   src="/src/assets/sections/hero/Profile-icon.png"
