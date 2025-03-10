@@ -54,7 +54,7 @@ npm install
 npm run dev
 ```
 
-## Project Structure
+## Project Structure //currently in update
 
 ```
 src/
@@ -67,11 +67,6 @@ src/
 └── assets/           # Static assets
 ```
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
