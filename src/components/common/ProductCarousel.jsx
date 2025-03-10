@@ -5,7 +5,7 @@ export function ProductCarousel() {
   const carouselRef = useRef(null);
   const [hoverIndex, setHoverIndex] = useState(null);
 
-  const productImages = [
+  const originalImages = [
     {
       id: 1,
       src: "/src/assets/sections/scanner/1.png",
@@ -53,25 +53,56 @@ export function ProductCarousel() {
     },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % productImages.length);
-    }, 3000);
+  const productImages = [
+    ...originalImages,
+    ...originalImages,
+    ...originalImages,
+    ...originalImages,
+  ];
 
-    return () => clearInterval(interval);
-  }, [productImages.length]);
+  useEffect(() => {
+    let animationFrameId;
+    let startTime;
+    const duration = 30000;
+    const itemWidth = 266;
+    const resetPoint = originalImages.length * itemWidth;
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+
+      let position = (elapsed * 0.05) % resetPoint;
+
+      setActiveIndex(position / itemWidth);
+
+      if (position >= resetPoint) {
+        startTime = timestamp;
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [originalImages.length]);
 
   return (
     <div className="relative overflow-hidden py-8" ref={carouselRef}>
       <div
-        className="flex gap-4 transition-transform duration-500 ease-in-out"
+        className="flex gap-4"
         style={{
           transform: `translateX(-${activeIndex * (250 + 16)}px)`,
+          transition: "transform 0ms linear",
         }}
       >
         {productImages.map((image, index) => (
           <div
-            key={image.id}
+            key={`${image.id}-${index}`}
             className="relative flex-shrink-0 w-[250px] aspect-square rounded-3xl overflow-hidden bg-white shadow-sm transition-all duration-300 group"
             onMouseEnter={() => setHoverIndex(index)}
             onMouseLeave={() => setHoverIndex(null)}
@@ -80,6 +111,8 @@ export function ProductCarousel() {
               src={image.src}
               alt={image.alt}
               className="w-full h-full object-cover"
+              loading="eager"
+              decoding="sync"
             />
 
             {hoverIndex === index && (

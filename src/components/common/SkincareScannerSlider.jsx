@@ -18,21 +18,16 @@ function PhoneFrame({ imageUrl, altText, overlays }) {
       <img
         src={imageUrl}
         alt={altText}
-        className="w-full h-full rounded-[32px] transition-opacity duration-500"
+        className="w-full h-full rounded-[32px]"
       />
       {overlays &&
         overlays.map((overlay, index) => (
-          <div
-            key={index}
-            className={`${overlay.className} transition-opacity duration-500`}
-          >
+          <div key={index} className={overlay.className}>
             {overlay.type === "image" ? (
               <img
                 src={overlay.src}
                 alt={overlay.alt || "overlay"}
-                className={`${
-                  overlay.imageClassName || "w-full h-auto"
-                } transition-opacity duration-500`}
+                className={overlay.imageClassName || "w-full h-auto"}
               />
             ) : (
               <div className={overlay.contentClassName}>{overlay.content}</div>
@@ -44,38 +39,19 @@ function PhoneFrame({ imageUrl, altText, overlays }) {
 }
 
 function SliderNavigation({ activeSlide, totalSlides, onPrev, onNext }) {
-  const isFirstSlide = activeSlide === 0;
-  const isLastSlide = activeSlide === totalSlides - 1;
-
   return (
     <div className="flex gap-2">
       <button
         onClick={onPrev}
-        disabled={isFirstSlide}
-        className={`h-10 w-10 rounded-full flex items-center justify-center transition-colors duration-300 ${
-          isFirstSlide
-            ? "bg-gray-100 cursor-not-allowed"
-            : "bg-lime-100 hover:bg-lime-200"
-        }`}
+        className="h-10 w-10 rounded-full bg-lime-100 flex items-center justify-center"
       >
-        <ChevronLeft
-          size={20}
-          className={isFirstSlide ? "text-gray-400" : "text-gray-700"}
-        />
+        <ChevronLeft size={20} />
       </button>
       <button
         onClick={onNext}
-        disabled={isLastSlide}
-        className={`h-10 w-10 rounded-full flex items-center justify-center transition-colors duration-300 ${
-          isLastSlide
-            ? "bg-gray-100 cursor-not-allowed"
-            : "bg-lime-100 hover:bg-lime-200"
-        }`}
+        className="h-10 w-10 rounded-full bg-lime-100 flex items-center justify-center"
       >
-        <ChevronRight
-          size={20}
-          className={isLastSlide ? "text-gray-400" : "text-gray-700"}
-        />
+        <ChevronRight size={20} />
       </button>
     </div>
   );
@@ -83,7 +59,6 @@ function SliderNavigation({ activeSlide, totalSlides, onPrev, onNext }) {
 
 export function SkincareScannerSlider() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const totalSlides = 5;
 
   const slides = [
@@ -177,21 +152,11 @@ export function SkincareScannerSlider() {
   ];
 
   const nextSlide = () => {
-    if (activeSlide >= totalSlides - 1) return; // Prevent going beyond last slide
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setActiveSlide((prev) => prev + 1);
-      setIsTransitioning(false);
-    }, 300);
+    setActiveSlide((prev) => (prev + 1) % totalSlides);
   };
 
   const prevSlide = () => {
-    if (activeSlide <= 0) return; // Prevent going before first slide
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setActiveSlide((prev) => prev - 1);
-      setIsTransitioning(false);
-    }, 300);
+    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
   const currentSlide = slides[activeSlide];
@@ -199,11 +164,7 @@ export function SkincareScannerSlider() {
   return (
     <section className="py-16 flex flex-col md:flex-row gap-8 items-center">
       <div className="md:w-1/2">
-        <div
-          className={`relative mx-auto transition-opacity duration-500 ${
-            isTransitioning ? "opacity-0" : "opacity-100"
-          }`}
-        >
+        <div className="relative mx-auto">
           {currentSlide.src && (
             <PhoneFrame
               imageUrl={currentSlide.src}
@@ -213,28 +174,17 @@ export function SkincareScannerSlider() {
           )}
           {currentSlide.overlays &&
             currentSlide.overlays.map((overlay, index) => (
-              <div
-                key={index}
-                className={`${
-                  overlay.className
-                } transition-opacity duration-500 ${
-                  isTransitioning ? "opacity-0" : "opacity-100"
-                }`}
-              >
+              <div key={index} className={overlay.className}>
                 <img
                   src={overlay.src}
                   alt={overlay.alt}
-                  className={`${overlay.imageClassName} transition-opacity duration-500`}
+                  className={overlay.imageClassName}
                 />
               </div>
             ))}
         </div>
       </div>
-      <div
-        className={`md:w-1/2 transition-opacity duration-500 ${
-          isTransitioning ? "opacity-0" : "opacity-100"
-        }`}
-      >
+      <div className="md:w-1/2 opacity-100 transition-all duration-500">
         {activeSlide === 0 && (
           <h2 className="text-3xl md:text-4xl font-marbley text-purple-400 mb-6">
             Curious about how the
@@ -244,7 +194,7 @@ export function SkincareScannerSlider() {
             works its magic? ✨🔍
           </h2>
         )}
-        <div className="mb-8">
+        <div className="mb-8 opacity-100 transition-all duration-500">
           <h3 className="text-xl text-purple-400 mb-4 font-schibsted">
             {currentSlide.title}
           </h3>
